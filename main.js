@@ -140,20 +140,26 @@ function initCars() {
 function carsGo() {
 	//reparto inicial
 	var indexCar = 0;
-
-	while(TRAVELLERS.length > 0){
-	  cars[indexCar].go();
-	  console.log(cars[indexCar].hits);
-	  indexCar++;
+	
+	while (indexCar < CARS) {
+		cars[indexCar].go();
+		console.log(cars[indexCar].hits);
+		indexCar++;
 	}
+	
+	finish();
 	
 }
 
 function finish() {
 	for (var i = 0; i < CARS; i++) {
-		var current_car = CARS[i].hit;
-		console.log(current_car.stringify());
-		fs.appendFile('out.txt', current_car.length + "\n", function (err) {
+		var current_car = cars[i].hits;
+		var exit = "";
+		for (var j = 0; j < current_car.length; j++) {
+			exit += " "+current_car[j];
+		}
+		
+		fs.appendFile('out.txt', current_car.length + " " + exit + " " + "\n", function (err) {
 			if (err) {
 				console.log(err)
 			}
