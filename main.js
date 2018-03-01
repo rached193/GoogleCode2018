@@ -22,9 +22,25 @@ function readFile(name) {
 	var data_lines = data.split("\n");
 	
 	for (var i = 1; i < data_lines.length; i++) {
-		var data_aux = data_lines[i].split("");
-		if (data_aux.length > 0) info[i - 1] = data_aux;
+		var data_aux = data_lines[i].split(" ");
+		if (data_aux.length > 1) {
+			var obj = {
+				cordenadas_inicio: {
+					x: data_aux[0],
+					y: data_aux[1]
+				},
+				cordenadas_fin: {
+					x: data_aux[2],
+					y: data_aux[3]
+				},
+				tiempo_inicio: data_aux[4],
+				tiempo_fin: data_aux[5]
+			};
+			
+			info.push(obj);
+		}
 	}
+	
 	console.log(info);
 	return info;
 }
