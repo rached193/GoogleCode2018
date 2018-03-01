@@ -53,11 +53,6 @@ var cars=[];
 
 
 
-
-console.log(CARS);
-
-
-
 writeFile(solution);
 initCars();
 
