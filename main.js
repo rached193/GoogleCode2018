@@ -7,17 +7,27 @@ class Car {
   constructor(x, y) {
 		this.x = (x) ? x : 0;
     this.y = (y) ? y : 0;
+		this.step = 0;
   }
 //MAX_X, MAX_Y
   move(direction) {
-		if(direction = 'UP'){
-			this.y = this.y - 1;
-		} else if(direction = 'DOWN'){
-			this.y = this.y + 1;
-		} else if(direction = 'RIGHT'){
-			this.x = this.x + 1;
-		} else if(direction = 'LEFT'){
-			this.x = this.x - 1;
+		if(this.step == TIME){
+			return false;
+		} else {
+
+			if(direction = 'UP'){
+				this.y = this.y - 1;
+			} else if(direction = 'DOWN'){
+				this.y = this.y + 1;
+			} else if(direction = 'RIGHT'){
+				this.x = this.x + 1;
+			} else if(direction = 'LEFT'){
+				this.x = this.x - 1;
+			}
+
+			this.step = this.step +1;
+
+			return true;
 		}
   }
 }
