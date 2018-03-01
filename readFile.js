@@ -24,6 +24,7 @@ exports.readFile = function (name) {
 		var data_aux = data_lines[i].split(" ");
 		if (data_aux.length > 1) {
 			var obj = {
+				id: i - 1,
 				cordenadas_inicio: {
 					x: data_aux[0],
 					y: data_aux[1]
