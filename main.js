@@ -1,5 +1,5 @@
 /* Dependencias */
-
+var fs = require('fs');
 
 var read = require("./readFile.js");
 
@@ -8,9 +8,10 @@ class Car {
 		this.x = (x) ? x : 0;
 		this.y = (y) ? y : 0;
 		this.step = 0;
-    this.traveller = null;
-    this.hits = [];
-  }
+		this.traveller = null;
+		this.hits = [];
+	}
+
 //MAX_X, MAX_Y
 	move(direction) {
 		if (this.step == TIME) {
@@ -145,4 +146,16 @@ function carsGo(){
   //   indexCar++;
   // }
 
+}
+
+function finish() {
+	for (var i = 0; i < CARS; i++) {
+		var current_car = CARS[i].hit;
+		console.log(current_car.stringify());
+		fs.appendFile('out.txt',current_car.length+"\n", function (err) {
+			if (err) {
+				console.log(err)
+			}
+		});
+	}
 }
