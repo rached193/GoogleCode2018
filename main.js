@@ -11,7 +11,18 @@ if (!file_name) throw new Error('Fichero de entrada no definido');
 readFile(file_name);
 
 function readFile(name) {
-	var data = fs.readFileSync('example.in');
-	console.log("Synchronous read: " + data.toString());
+	if (!fs.existsSync(name)) throw new Error('Ruta de fichero incorrecta');
+	
+	var info = [];
+	
+	var data = fs.readFileSync(name, 'utf8');
+	var data_lines = data.split("\n");
+	
+	for (var i = 1; i < data_lines.length; i++) {
+		var data_aux = data_lines[i].split("");
+		if (data_aux.length > 0) info[i - 1] = data_aux;
+	}
+	console.log(info);
+	return info;
 }
 
