@@ -8,7 +8,10 @@ var file_name = args[2];
 
 if (!file_name) throw new Error('Fichero de entrada no definido');
 
-readFile(file_name);
+var problem_data = readFile(file_name);
+var solution = solve(problem_data);
+writeFile(solution);
+
 
 function readFile(name) {
 	if (!fs.existsSync(name)) throw new Error('Ruta de fichero incorrecta');
@@ -24,5 +27,13 @@ function readFile(name) {
 	}
 	console.log(info);
 	return info;
+}
+
+function writeFile(name) {
+
+}
+
+function solve(problem_data) {
+
 }
 
