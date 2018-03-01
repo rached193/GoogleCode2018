@@ -36,7 +36,13 @@ class Car {
 	
 	getTraveller() {
 		if (TRAVELLERS.length > 0) {
-			this.traveller = TRAVELLERS.pop();
+			var index = selectViajero(this);
+			if (index != -1) {
+				this.traveller = TRAVELLERS.splice(index, 1)[0];
+			}
+			else {
+				this.traveller = TRAVELLERS.pop();
+			}
 		}
 	}
 	
@@ -156,7 +162,7 @@ function finish() {
 		var current_car = cars[i].hits;
 		var exit = "";
 		for (var j = 0; j < current_car.length; j++) {
-			exit += " "+current_car[j];
+			exit += " " + current_car[j];
 		}
 		
 		fs.appendFile('out.txt', current_car.length + " " + exit + " " + "\n", function (err) {
@@ -164,5 +170,40 @@ function finish() {
 				console.log(err)
 			}
 		});
+	}
+}
+
+function distManhatan(x1, y1, x2, y2) {
+	var val = Math.abs(x1 - x2) + Math.abs(y1 - y2);
+	return val;
+}
+
+function selectViajero(car) {
+	var maxValue = -1;
+	var maxI = -1;
+	for (var i = 0; i < TRAVELLERS.length; i++) {
+		var value = magicFunction(car, TRAVELLERS[i].cordenadas_inicio, TRAVELLERS[i].cordenadas_fin, TRAVELLERS[i].tiempo_inicio, TRAVELLERS[i].tiempo_fin);
+		if (!value <= 0 && value > maxValue) {
+			maxValue = value;
+			maxI = i;
+		}
+	}
+	
+	return maxI;
+}
+
+function magicFunction(posIni, posViajero, dest, tmax, tini, tactual) {
+	var cosa1 = distManhatan(posIni.x, posIni.y, posViajero.x, posViajero.y);
+	var cosa2 = distManhatan(posViajero.x, posViajero.y, dest.x, dest.y);
+	var estimTemp = cosa1 + cosa2 + tactual;
+	if (estimTemp > tmax) {
+		return -10000000000000;
+	}
+	else {
+		var bonusPoints = 0;
+		if ((cosa1 + tactual) <= tini) {
+			bonusPoints = BONUS - (tini - (cosa1 + tactual));
+		}
+		return ((cosa2 + bonusPoints) - cosa1);
 	}
 }
