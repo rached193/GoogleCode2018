@@ -8,6 +8,8 @@ class Car {
 		this.x = (x) ? x : 0;
     this.y = (y) ? y : 0;
 		this.step = 0;
+    this.traveller = null;
+    this.hits = [];
   }
 //MAX_X, MAX_Y
   move(direction) {
@@ -30,6 +32,56 @@ class Car {
 			return true;
 		}
   }
+
+  getTraveller() {
+    if(TRAVELLERS.length > 0){
+      this.traveller = TRAVELLERS.pop();
+    }
+  }
+
+  goInitPostion(){
+    //movimiento horizontal
+    var hDesp = this.traveller.cordenadas_inicio.x - this.x;
+    var direction = (hDesp > 0) ? 'RIGHT' : 'LEFT';
+    for(var i = 0; i < Math.abs(hDesp); i++){
+      if(!this.move(direction)){
+        break;
+      }
+    }
+    //movimiento vertical
+    var vDesp = this.traveller.cordenadas_inicio.y - this.y;
+    var direction = (hDesp > 0) ? 'DOWN' : 'UP';
+    for(var i = 0; i < Math.abs(vDesp); i++){
+      if(!this.move(direction)){
+        break;
+      }
+    }
+  }
+
+  goToDestination(){
+    //movimiento horizontal
+    var hDesp = this.traveller.cordenadas_fin.x - this.x;
+    var direction = (hDesp > 0) ? 'RIGHT' : 'LEFT';
+    for(var i = 0; i < Math.abs(hDesp); i++){
+      if(!this.move(direction)){
+        break;
+      }
+    }
+    //movimiento vertical
+    var vDesp = this.traveller.cordenadas_fin.y - this.y;
+    var direction = (hDesp > 0) ? 'DOWN' : 'UP';
+    for(var i = 0; i < Math.abs(vDesp); i++){
+      if(!this.move(direction)){
+        break;
+      }
+    }
+
+    if(this.step <= TIME){
+      this.hit = this.hit +1;
+    }
+  }
+
+
 }
 const args = process.argv;
 
