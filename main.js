@@ -39,7 +39,7 @@ class Car {
     }
   }
 
-  goInitPostion(){
+  goInitPosition(){
     //movimiento horizontal
     var hDesp = this.traveller.cordenadas_inicio.x - this.x;
     var direction = (hDesp > 0) ? 'RIGHT' : 'LEFT';
@@ -77,7 +77,22 @@ class Car {
     }
 
     if(this.step <= TIME){
-      this.hit = this.hit +1;
+      this.hits.push(this.traveller.id);
+      this.traveller = null;
+    }
+  }
+
+  go(){
+    while(this.step < TIME){
+      this.getTraveller();
+      this.goInitPosition();
+      this.goToDestination();
+      //no ha llegado a destino
+      if(this.traveller != null){
+        TRAVELLERS.push(this.traveller);
+        this.traveller = null;
+      }
+
     }
   }
 
@@ -92,7 +107,7 @@ var file_name = args[2];
 
 var data = read.readFile(file_name);
 
-var VIAJEROS = data[0];
+var TRAVELLERS = data[0];
 var MAX_X = data[1];
 var MAX_Y = data[2];
 var CARS = data[3];
@@ -107,11 +122,27 @@ if (!file_name) throw new Error('Fichero de entrada no definido');
 var cars = [];
 
 
-// initCars();
-
+initCars();
+carsGo();
 
 function initCars() {
+  //contruyendo coches
 	for (var i = 0; i < CARS; i++) {
 		cars.push(new Car());
 	}
+
+}
+
+function carsGo(){
+  //reparto inicial
+  var indexCar = 0;
+  console.log(cars)
+   cars[0].go()
+   console.log(cars[0])
+  // while(TRAVELLERS.length > 0){
+  //   cars[indexCar].go();
+  //   console.log(cars[indexCar].hits);
+  //   indexCar++;
+  // }
+
 }
