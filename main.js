@@ -17,87 +17,90 @@ class Car {
 		if (this.step == TIME) {
 			return false;
 		} else {
-
-			if (direction = 'UP') {
+			
+			if (direction == 'UP') {
 				this.y = this.y - 1;
-			} else if (direction = 'DOWN') {
+			} else if (direction == 'DOWN') {
 				this.y = this.y + 1;
-			} else if (direction = 'RIGHT') {
+			} else if (direction == 'RIGHT') {
 				this.x = this.x + 1;
-			} else if (direction = 'LEFT') {
+			} else if (direction == 'LEFT') {
 				this.x = this.x - 1;
 			}
-
+			
 			this.step = this.step + 1;
-
+			
 			return true;
 		}
-  }
-
-  getTraveller() {
-    if(TRAVELLERS.length > 0){
-      this.traveller = TRAVELLERS.pop();
-    }
-  }
-
-  goInitPosition(){
-    //movimiento horizontal
-    var hDesp = this.traveller.cordenadas_inicio.x - this.x;
-    var direction = (hDesp > 0) ? 'RIGHT' : 'LEFT';
-    for(var i = 0; i < Math.abs(hDesp); i++){
-      if(!this.move(direction)){
-        break;
-      }
-    }
-    //movimiento vertical
-    var vDesp = this.traveller.cordenadas_inicio.y - this.y;
-    var direction = (hDesp > 0) ? 'DOWN' : 'UP';
-    for(var i = 0; i < Math.abs(vDesp); i++){
-      if(!this.move(direction)){
-        break;
-      }
-    }
-  }
-
-  goToDestination(){
-    //movimiento horizontal
-    var hDesp = this.traveller.cordenadas_fin.x - this.x;
-    var direction = (hDesp > 0) ? 'RIGHT' : 'LEFT';
-    for(var i = 0; i < Math.abs(hDesp); i++){
-      if(!this.move(direction)){
-        break;
-      }
-    }
-    //movimiento vertical
-    var vDesp = this.traveller.cordenadas_fin.y - this.y;
-    var direction = (hDesp > 0) ? 'DOWN' : 'UP';
-    for(var i = 0; i < Math.abs(vDesp); i++){
-      if(!this.move(direction)){
-        break;
-      }
-    }
-
-    if(this.step <= TIME){
-      this.hits.push(this.traveller.id);
-      this.traveller = null;
-    }
-  }
-
-  go(){
-    while(this.step < TIME){
-      this.getTraveller();
-      this.goInitPosition();
-      this.goToDestination();
-      //no ha llegado a destino
-      if(this.traveller != null){
-        TRAVELLERS.push(this.traveller);
-        this.traveller = null;
-      }
-
-    }
-  }
-
-
+	}
+	
+	getTraveller() {
+		if (TRAVELLERS.length > 0) {
+			this.traveller = TRAVELLERS.pop();
+		}
+	}
+	
+	goInitPosition() {
+		//movimiento horizontal
+		var hDesp = this.traveller.cordenadas_inicio.x - this.x;
+		var direction = (hDesp > 0) ? 'RIGHT' : 'LEFT';
+		
+		
+		for (var i = 0; i < Math.abs(hDesp); i++) {
+			if (!this.move(direction)) {
+				break;
+			}
+		}
+		
+		//movimiento vertical
+		var vDesp = this.traveller.cordenadas_inicio.y - this.y;
+		var direction = (vDesp > 0) ? 'DOWN' : 'UP';
+		for (var i = 0; i < Math.abs(vDesp); i++) {
+			if (!this.move(direction)) {
+				break;
+			}
+		}
+	}
+	
+	goToDestination() {
+		//movimiento horizontal
+		var hDesp = this.traveller.cordenadas_fin.x - this.x;
+		var direction = (hDesp > 0) ? 'RIGHT' : 'LEFT';
+		for (var i = 0; i < Math.abs(hDesp); i++) {
+			if (!this.move(direction)) {
+				break;
+			}
+		}
+		//movimiento vertical
+		var vDesp = this.traveller.cordenadas_fin.y - this.y;
+		var direction = (hDesp > 0) ? 'DOWN' : 'UP';
+		for (var i = 0; i < Math.abs(vDesp); i++) {
+			if (!this.move(direction)) {
+				break;
+			}
+		}
+		
+		if (this.step <= TIME) {
+			this.hits.push(this.traveller.id);
+			this.traveller = null;
+		}
+	}
+	
+	go() {
+		while (this.step < TIME) {
+			this.getTraveller();
+			if (!this.traveller) break;
+			this.goInitPosition();
+			this.goToDestination();
+			//no ha llegado a destino
+			if (this.traveller != null) {
+				TRAVELLERS.push(this.traveller);
+				this.traveller = null;
+			}
+		}
+	}
+	
+	
 }
 
 const args = process.argv;
@@ -116,7 +119,7 @@ var RIDES = data[4];
 var BONUS = data[5];
 var TIME = data[6];
 
-console.log(CARS)
+
 if (!file_name) throw new Error('Fichero de entrada no definido');
 
 
@@ -127,32 +130,30 @@ initCars();
 carsGo();
 
 function initCars() {
-  //contruyendo coches
+	//contruyendo coches
 	for (var i = 0; i < CARS; i++) {
 		cars.push(new Car());
 	}
-
+	
 }
 
-function carsGo(){
-  //reparto inicial
-  var indexCar = 0;
-  console.log(cars)
-   cars[0].go()
-   console.log(cars[0])
-  // while(TRAVELLERS.length > 0){
-  //   cars[indexCar].go();
-  //   console.log(cars[indexCar].hits);
-  //   indexCar++;
-  // }
+function carsGo() {
+	//reparto inicial
+	var indexCar = 0;
 
+	while(TRAVELLERS.length > 0){
+	  cars[indexCar].go();
+	  console.log(cars[indexCar].hits);
+	  indexCar++;
+	}
+	
 }
 
 function finish() {
 	for (var i = 0; i < CARS; i++) {
 		var current_car = CARS[i].hit;
 		console.log(current_car.stringify());
-		fs.appendFile('out.txt',current_car.length+"\n", function (err) {
+		fs.appendFile('out.txt', current_car.length + "\n", function (err) {
 			if (err) {
 				console.log(err)
 			}

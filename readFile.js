@@ -40,8 +40,5 @@ exports.readFile = function (name) {
 			info.push(obj);
 		}
 	}
-	
-	console.log(info);
 	return [info, MAX_X, MAX_Y, CARS, RIDES, BONUS, TIME];
-	
-}
+};
