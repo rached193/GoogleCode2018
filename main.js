@@ -40,9 +40,6 @@ class Car {
 			if (index != -1) {
 				this.traveller = TRAVELLERS.splice(index, 1)[0];
 			}
-			else {
-				this.traveller = TRAVELLERS.pop();
-			}
 		}
 	}
 	
